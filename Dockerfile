@@ -1,5 +1,10 @@
-FROM alpine
+FROM python:3.8-slim-buster
 
-RUN apk add gcc make git linux-headers musl-dev
+WORKDIR /app
+COPY app.py .
 
-RUN git clone https://github.com/HewlettPackard/wireless-tools/ && cd wireless-tools/wireless_tools && make CFLAGS='-Wno-error -Wno-implicit-function-declaration -Wno-int-conversion'
+# We'll be installing outdated version on purpose o_O
+RUN pip install --no-cache-dir urllib3==2.0.0
+
+# 5. Run the script
+ENTRYPOINT ["python", "app.py"]
